@@ -1,11 +1,21 @@
 use sdl2::rect::{Rect, Point};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Entitytype {
+    Player,
+    Wallpaper,
+}
+
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Direction {
+    Still,
     Up,
     Movetoleft,
     Null,
 }
+
+pub struct EntityType(pub Entitytype);
 
 /// The current position of a given entity
 #[derive(Clone, Copy, Debug, PartialEq)]
