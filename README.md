@@ -2,7 +2,7 @@
 Flappy bird game in rust making use of sdl2 library and amethyst/legion's ECS library
 
 # How to use it
-//
+In development...
 
 # Assets
 1. assets pack: https://megacrash.itch.io/flappy-bird-assets
