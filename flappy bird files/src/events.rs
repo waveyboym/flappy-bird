@@ -3,7 +3,6 @@ use sdl2::EventPump;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use crate::components::*;
-use crate::constants::*;
 
 pub fn process_events(event_pump: &mut EventPump, world: &mut World) -> bool {
     for event in event_pump.poll_iter() {
@@ -17,18 +16,22 @@ pub fn process_events(event_pump: &mut EventPump, world: &mut World) -> bool {
                 for (velocity, entity_type) in query.iter_mut(world) {
                     if entity_type.0.eq(&Entitytype::Player){
                         velocity.direction = Direction::Up;
-                        velocity.speed = PLAYER_MOVEMENT_SPEED;
+                    }
+                    else if (entity_type.0.eq(&Entitytype::Pipegreen) || entity_type.0.eq(&Entitytype::Pipeyellow))
+                    && velocity.direction.eq(&Direction::Still){
+                        //this will only fire once when the player moves
+                        velocity.direction = Direction::Movepolesleft;
                     }
                 }
             },
             Event::KeyUp { keycode: Some(Keycode::Space), repeat: false, .. } => {
                 let mut query = <(&mut Velocity, &EntityType)>::query();
 
-                //move bird up by five pixels
+                //stop movement
                 for (velocity, entity_type) in query.iter_mut(world) {
                     if entity_type.0.eq(&Entitytype::Player){
                         velocity.direction = Direction::Null;
-                        velocity.speed = 0;
+                        break;
                     }
                 }
             },

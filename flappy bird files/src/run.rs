@@ -26,6 +26,10 @@ pub fn init_and_start_run() -> Result<(), String>{
         .build()
         .map_err(|e| e.to_string())?;
     
+    //let icon: S = ;
+
+    //window.set_icon(icon);
+    
     let mut canvas = window
         .into_canvas()
         .software()
@@ -34,43 +38,137 @@ pub fn init_and_start_run() -> Result<(), String>{
     
     let texture_creator = canvas.texture_creator();
     let textures = [
-        texture_creator.load_texture("assets/Background3.png")?,
-        texture_creator.load_texture("assets/bird1.png")?,
+        texture_creator.load_texture("assets/Background5.png")?,//background
+        texture_creator.load_texture("assets/bird1.png")?,//bird/player
+        texture_creator.load_texture("assets/pipegreen.png")?,//green pipe
+        texture_creator.load_texture("assets/pipeyellow.png")?,//yellow pipe
+        texture_creator.load_texture("assets/landscape.png")?,//landscape
     ];
 
-
-    //entities in world
-    let _backgroundwallpaper: &[Entity] = world.extend(vec![
-        (
-            EntityType(Entitytype::Wallpaper),
-            Position(Point::new(0, 0)), 
-            Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movetoleft},
-            Rect::new(0, 0, SCREEN_WIDTH, SCREEN_WIDTH),
-        ),
-        (
-            EntityType(Entitytype::Wallpaper),
-            Position(Point::new(SCREEN_WIDTH as i32, 0)), 
-            Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movetoleft},
-            Rect::new(0, 0, SCREEN_WIDTH, SCREEN_WIDTH),
-        ),
-        (
-            EntityType(Entitytype::Wallpaper),
-            Position(Point::new(SCREEN_WIDTH as i32 * 2, 0)), 
-            Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movetoleft},
-            Rect::new(0, 0, SCREEN_WIDTH, SCREEN_WIDTH),
-        ),
-    ]);
-
-    let _player: Entity = world
-        .push((
-            EntityType(Entitytype::Player),
-            Position(Point::new(0, 0)), 
-            Velocity{speed: 0, direction: Direction::Still},//TODO: change later from 0 to (-1 * PLAYER_MOVEMENT_SPEED)
-            Sprite{spritesheet: 0, region: Rect::new(0, 0, 16, 16),}
-        ));
+    add_static_entities_to_world(&mut world);
 
     run_application(&mut world, &mut period, &mut event_pump, &mut canvas, &textures)?;
     Ok(())
+}
+
+fn add_static_entities_to_world(world: &mut World, ){
+    //entities in world
+    //player entity
+    world.push((
+            EntityType(Entitytype::Player),
+            Position(Point::new(0, 0)), 
+            Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Still},
+            Sprite{spritesheet: 0, region: Rect::new(0, 0, PLAYER_SPRITE_SIZE_WL, PLAYER_SPRITE_SIZE_WL),}
+        ));
+
+    //wallpaper entity
+    world.extend(vec![
+            (
+                EntityType(Entitytype::Wallpaper),
+                Position(Point::new(0, 0)), 
+                Velocity{speed: BACKGROUND_WALLPAPER_MOVEMENT_SPEED, direction: Direction::Movebgleft},
+                Rect::new(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
+            ),
+            (
+                EntityType(Entitytype::Wallpaper),
+                Position(Point::new(SCREEN_WIDTH as i32, 0)), 
+                Velocity{speed: BACKGROUND_WALLPAPER_MOVEMENT_SPEED, direction: Direction::Movebgleft},
+                Rect::new(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
+            ),
+            (
+                EntityType(Entitytype::Wallpaper),
+                Position(Point::new(SCREEN_WIDTH as i32 * 2, 0)), 
+                Velocity{speed: BACKGROUND_WALLPAPER_MOVEMENT_SPEED, direction: Direction::Movebgleft},
+                Rect::new(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
+            ),
+        ]);
+    
+    //pipe entity
+    world.extend(vec![
+            (
+                EntityType(Entitytype::Pipegreen),
+                Position(Point::new(0, BTM_ADDBASE_VAL as i32)), 
+                Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Still},
+                Rect::new(0, 0, PIPE_WIDTH, PIPE_HEIGHT),
+            ),
+            (
+                EntityType(Entitytype::Pipegreen),
+                Position(Point::new(0, -(SCREEN_HEIGHT as i32 / 2) - TOP_SUBBASE_VAL as i32)), 
+                Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Still},
+                Rect::new(0, 0, PIPE_WIDTH, PIPE_HEIGHT),
+            ),
+            (
+                EntityType(Entitytype::Pipeyellow),
+                Position(Point::new(PIPE_WIDTH as i32 + X_SEPARATION as i32, BTM_ADDBASE_VAL as i32)), 
+                Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Still},
+                Rect::new(0, 0, PIPE_WIDTH, PIPE_HEIGHT),
+            ),
+            (
+                EntityType(Entitytype::Pipeyellow),
+                Position(Point::new(PIPE_WIDTH as i32 + X_SEPARATION as i32, -(SCREEN_HEIGHT as i32 / 2) - TOP_SUBBASE_VAL as i32)), 
+                Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Still},
+                Rect::new(0, 0, PIPE_WIDTH, PIPE_HEIGHT),
+            ),
+            (
+                EntityType(Entitytype::Pipegreen),
+                Position(Point::new(PIPE_WIDTH as i32 * 2 + X_SEPARATION as i32 * 2, BTM_ADDBASE_VAL as i32)), 
+                Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Still},
+                Rect::new(0, 0, PIPE_WIDTH, PIPE_HEIGHT),
+            ),
+            (
+                EntityType(Entitytype::Pipegreen),
+                Position(Point::new(PIPE_WIDTH as i32 * 2 + X_SEPARATION as i32 * 2, -(SCREEN_HEIGHT as i32 / 2) - TOP_SUBBASE_VAL as i32)), 
+                Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Still},
+                Rect::new(0, 0, PIPE_WIDTH, PIPE_HEIGHT),
+            ),
+        ]);
+
+    //landscape entity
+    world.extend(vec![
+        (
+            EntityType(Entitytype::Landscape),
+            Position(Point::new(-(SCREEN_WIDTH as i32 / 2) + (LANDSCAPE_WIDTH as i32 / 2), BTM_LANDSCAPE_POS)), 
+            //Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movepolesleft},
+            Rect::new(0, 0, LANDSCAPE_WIDTH, (LANDSCAPE_WIDTH / 4) - 1),
+        ),
+        (
+            EntityType(Entitytype::Landscape),
+            Position(Point::new((-(SCREEN_WIDTH as i32 / 2) + (LANDSCAPE_WIDTH as i32 / 2)) + LANDSCAPE_WIDTH as i32, BTM_LANDSCAPE_POS)), 
+            //Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movepolesleft},
+            Rect::new(0, 0, LANDSCAPE_WIDTH, (LANDSCAPE_WIDTH / 4) - 1),
+        ),
+        (
+            EntityType(Entitytype::Landscape),
+            Position(Point::new((-(SCREEN_WIDTH as i32 / 2) + (LANDSCAPE_WIDTH as i32 / 2)) + (LANDSCAPE_WIDTH as i32 * 2), BTM_LANDSCAPE_POS)), 
+            //Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movepolesleft},
+            Rect::new(0, 0, LANDSCAPE_WIDTH, (LANDSCAPE_WIDTH / 4) - 1),
+        ),
+        (
+            EntityType(Entitytype::Landscape),
+            Position(Point::new((-(SCREEN_WIDTH as i32 / 2) + (LANDSCAPE_WIDTH as i32 / 2)) + (LANDSCAPE_WIDTH as i32 * 3), BTM_LANDSCAPE_POS)), 
+            //Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movepolesleft},
+            Rect::new(0, 0, LANDSCAPE_WIDTH, (LANDSCAPE_WIDTH / 4) - 1),
+        ),
+        (
+            EntityType(Entitytype::Landscape),
+            Position(Point::new((-(SCREEN_WIDTH as i32 / 2) + (LANDSCAPE_WIDTH as i32 / 2)) + (LANDSCAPE_WIDTH as i32 * 4), BTM_LANDSCAPE_POS)), 
+            //Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movepolesleft},
+            Rect::new(0, 0, LANDSCAPE_WIDTH, (LANDSCAPE_WIDTH / 4) - 1),
+        ),
+        (
+            EntityType(Entitytype::Landscape),
+            Position(Point::new((-(SCREEN_WIDTH as i32 / 2) + (LANDSCAPE_WIDTH as i32 / 2)) + (LANDSCAPE_WIDTH as i32 * 5), BTM_LANDSCAPE_POS)), 
+            //Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movepolesleft},
+            Rect::new(0, 0, LANDSCAPE_WIDTH, (LANDSCAPE_WIDTH / 4) - 1),
+        ),
+        (
+            EntityType(Entitytype::Landscape),
+            Position(Point::new((-(SCREEN_WIDTH as i32 / 2) + (LANDSCAPE_WIDTH as i32 / 2)) + (LANDSCAPE_WIDTH as i32 * 6), BTM_LANDSCAPE_POS)), 
+            //Velocity{speed: PLAYER_MOVEMENT_SPEED, direction: Direction::Movepolesleft},
+            Rect::new(0, 0, LANDSCAPE_WIDTH, (LANDSCAPE_WIDTH / 4) - 1),
+        )
+    ]);
+
 }
 
 fn run_application(

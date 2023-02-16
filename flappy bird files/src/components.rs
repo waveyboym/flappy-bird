@@ -2,8 +2,11 @@ use sdl2::rect::{Rect, Point};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Entitytype {
-    Player,
     Wallpaper,
+    Player,
+    Pipegreen,
+    Pipeyellow,
+    Landscape,
 }
 
 
@@ -11,7 +14,8 @@ pub enum Entitytype {
 pub enum Direction {
     Still,
     Up,
-    Movetoleft,
+    Movebgleft,
+    Movepolesleft,
     Null,
 }
 
