@@ -9,7 +9,6 @@ pub enum Entitytype {
     Landscape,
 }
 
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Direction {
     Still,

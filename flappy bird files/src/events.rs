@@ -4,7 +4,7 @@ use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use crate::components::*;
 
-pub fn process_events(event_pump: &mut EventPump, world: &mut World) -> bool {
+pub fn process_events(event_pump: &mut EventPump, world: &mut World, restart_game: &mut bool,) -> bool {
     for event in event_pump.poll_iter() {
         match event {
             Event::Quit {..} |
@@ -23,6 +23,9 @@ pub fn process_events(event_pump: &mut EventPump, world: &mut World) -> bool {
                         velocity.direction = Direction::Movepolesleft;
                     }
                 }
+            },
+            Event::KeyDown { keycode: Some(Keycode::R), repeat: false, .. } => {
+                *restart_game = true;
             },
             Event::KeyUp { keycode: Some(Keycode::Space), repeat: false, .. } => {
                 let mut query = <(&mut Velocity, &EntityType)>::query();
