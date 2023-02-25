@@ -26,10 +26,10 @@ pub fn update(
     }
 
     if *game_over == true && *restart_game == true{
-        //reset_world(world);
-        //*current_score = 0;
-        //*game_over = false;
-        //*restart_game = false;
+        reset_world(world);
+        *current_score = 0;
+        *game_over = false;
+        *restart_game = false;
     }
 
     //postion update
@@ -107,10 +107,37 @@ fn update_entity_positions(world: &mut World){
 
 }
 
-/*
 fn reset_world(world: &mut World){
+    let mut query = <(&mut Position, &EntityType, &mut Velocity)>::query();
 
-}*/
+    for (position, entity_type, velocity) in query.iter_mut(world) {
+        if entity_type.0.eq(&Entitytype::Player){
+            position.0.x = 0;
+            position.0.y = 0;
+            velocity.direction = Direction::Still;
+            break;
+        }
+    }
+
+    let mut index = 0;
+    let mut multiplier = 0;
+
+    for (position, entity_type, velocity) in query.iter_mut(world) {
+        if entity_type.0.eq(&Entitytype::Pipegreen) || entity_type.0.eq(&Entitytype::Pipeyellow){
+            position.0.x = PIPE_WIDTH as i32 * multiplier + X_SEPARATION as i32 * multiplier;
+            if index % 2 == 0 {
+                position.0.y = BTM_ADDBASE_VAL as i32;
+            }
+            else{
+                position.0.y = -(SCREEN_HEIGHT as i32 / 2) - TOP_SUBBASE_VAL as i32;
+            }
+            index += 1;
+            velocity.direction = Direction::Still;
+
+            if index % 2 == 0 { multiplier += 1; }
+        }
+    }
+}
 
 ///collision detection checker code
 fn get_box_a_xval(x_pos: &mut i32) -> (i32, i32){

@@ -55,6 +55,10 @@ pub fn render(
 
     if *game_over == true {
         //display game over text
+        canvas.set_draw_color(Color::RGBA(BLACKREDVAL, BLACKGREENVAL, BLACKBLUEVAL, BLACKOPACITY));
+        let rect = Rect::new(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        canvas.fill_rect(rect)?;
+        
         let mut gameover_text: String = "Your score is: ".to_owned();
     
         gameover_text.push_str(&current_score.to_string());

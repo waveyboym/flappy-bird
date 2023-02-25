@@ -15,6 +15,10 @@ pub const LANDSCAPE_WIDTH: u32 = 132;
 pub const REDVAL: u8 = 255;
 pub const GREENVAL: u8 = 255;
 pub const BLUEVAL: u8 = 255;
+pub const BLACKREDVAL: u8 = 10;
+pub const BLACKGREENVAL: u8 = 10;
+pub const BLACKBLUEVAL: u8 = 10;
+pub const BLACKOPACITY: u8 = 20;
 
 //POSITIONS, CUTOFF POINTS AND SPACING
 pub const EDGEOFSCREEN_YAXIS: i32 = (LANDSCAPE_WIDTH as i32 / 4) + 8;
