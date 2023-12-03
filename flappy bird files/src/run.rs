@@ -1,5 +1,5 @@
 use legion::*;
-use sdl2::{EventPump};
+use sdl2::EventPump;
 use sdl2::image::{self, LoadTexture, InitFlag};
 use sdl2::rect::{Rect, Point};
 use std::time::Duration;
