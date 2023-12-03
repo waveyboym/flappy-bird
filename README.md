@@ -5,7 +5,15 @@ Flappy bird game in rust making use of **<a href="https://github.com/Rust-SDL2/r
 ![flappy bird](images/screenshot.png "flappy bird")
 
 # How to use it
-In development...
+1. Download and setup sdl2 for rust on your OS by following this <a href="https://github.com/Rust-SDL2/rust-sdl2#requirements">guide</a>
+2. I went with the msvc for windows route
+3. The guide in step one only shows you how to set up sdl2 but not sdl2_image. The procedure is pretty much the same except you will just be setting up sdl2_image
+4. SDL2 and SDL2_image dll's are already included in this repo in the flappy bird files directory.
+5. After all of the set-up is done, run:
+```
+cargo run
+```
+6. Cargo will build and run your game for you.
 
 # Resources and tutorials followed
 1. https://lazyfoo.net/tutorials/SDL/
