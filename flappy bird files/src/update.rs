@@ -1,6 +1,6 @@
 use legion::*;
 use crate::components::*;
-use sdl2::rect::{Rect};
+use sdl2::rect::Rect;
 use crate::constants::*;
 
 pub fn update(
@@ -34,7 +34,7 @@ pub fn update(
 
     //postion update
     if *game_over == false{
-        update_entity_positions(world);
+        update_entity_positions(world, current_score);
     }
 }
 
@@ -75,7 +75,7 @@ fn fetch_pipe_entities(world: &mut World, game_over: &mut bool,){
 
 }
 
-fn update_entity_positions(world: &mut World){
+fn update_entity_positions(world: &mut World, current_score: &mut u32,){
     let mut positionquery = <(&mut Position, &Velocity)>::query();
     for (position, velocity) in positionquery.iter_mut(world) {
         if velocity.direction.eq(&Direction::Up){
@@ -101,6 +101,7 @@ fn update_entity_positions(world: &mut World){
             position.0 = position.0.offset(-velocity.speed, 0);
         }
         else{//if velocity.direction.eq(&Direction::Still) 
+            *current_score = 0;
             continue;
         }
     }
